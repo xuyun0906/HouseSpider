@@ -98,5 +98,5 @@ MYSQL_PWD = '123456'
 MYSQL_PORT = 3306
 
 ITEM_PIPELINES = {
-    'HouseSpider.pipelines.HousespiderPipeline': 300, #保存到mysql数据库
+    #'HouseSpider.pipelines.HousespiderPipeline': 300, #保存到mysql数据库
 }
