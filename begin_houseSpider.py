@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2018/3/12 14:18
-# @Author  : Dartz
+# @Author  : xuyun03
 # @Site    : 
-# @File    : begin_jim.py
+# @File    : begin_houseSpider.py
 # @Software: PyCharm
 
 from scrapy import cmdline

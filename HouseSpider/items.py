@@ -4,11 +4,13 @@
 #
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
-
 import scrapy
+from scrapy import Item, Field
+
 
 class XiaoquItem(scrapy.Item):
     id = scrapy.Field()  # 小区ID
+    url = scrapy.Field()  # 小区链接
     name = scrapy.Field()  # 小区名字
     huxingCount = scrapy.Field()  # 户型数
     chengjiaoCount = scrapy.Field()  # 历史成交套数
@@ -22,6 +24,7 @@ class XiaoquItem(scrapy.Item):
 
 class XiaoquDetailItem(scrapy.Item):
     id = scrapy.Field()  # 小区ID
+    url = scrapy.Field()  # 小区链接
     name = scrapy.Field()  # 小区名字
     buildYear = scrapy.Field()  # 建筑年代
     bulidType = scrapy.Field()  # 建筑类型
@@ -33,6 +36,7 @@ class XiaoquDetailItem(scrapy.Item):
 
 
 class ZSHouseItem(scrapy.Item):
+    url = scrapy.Field()  # 房屋链接
     name = scrapy.Field()  # 房屋名称
     city = scrapy.Field()  # 城市
     xiaoquId = scrapy.Field()  # 小区ID
