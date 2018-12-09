@@ -31,26 +31,25 @@ class LianjiaSpiderSpider(scrapy.Spider):
       xq_list = response.xpath("//ul[@class='listContent']/li")
       for xq in xq_list:
            item = XiaoquItem()
-           xq_name = xq.xpath('.//div[@class="title"]/a/text()')
-           xq_url = xq.xpath('.//div[@class="title"]/a/@href')
+           xq_name = xq.xpath('.//div[@class="title"]/a/text()').extract()
+           xq_url = xq.xpath('.//div[@class="title"]/a/@href').extract()
            item['id'] = xq_url
            item['name'] = xq_name
-           sale_url = xq.xpath('.//a[@class="totalSellCount"]/@href')
+           sale_url = xq.xpath('.//a[@class="totalSellCount"]/@href').extract()
            houseInfo = xq.xpath('.//div[@class="houseInfo"]/a/text()').extract()
-        if len(houseInfo) == 3:
-           item['huxingCount'] = houseInfo[0]
-           item['chengjiaoCount'] = houseInfo[1]
-           item['zaizuCount'] = houseInfo[2]
-        else :
-           item['chengjiaoCount'] = houseInfo[0]
-           item['zaizuCount'] = houseInfo[1]
+           if len(houseInfo) == 3:
+             item['huxingCount'] = houseInfo[0]
+             item['chengjiaoCount'] = houseInfo[1]
+             item['zaizuCount'] = houseInfo[2]
+           else :
+             item['chengjiaoCount'] = houseInfo[0]
+             item['zaizuCount'] = houseInfo[1]
 
-           item['region'] = xq.xpath('.//div[@class="positionInfo"]/a[@class="district"]/text()')
-           item['district'] = xq.xpath('.//div[@class="positionInfo"]/a[@class="bizcircle"]/text()')
-           item['avgPrice'] = xq.xpath('.//div[@class="totalPrice"]/span/text()')
-           item['zaishouCount'] = xq.xpath('.//a[@class="totalSellCount"]/span/text()')
+           item['region'] = xq.xpath('.//div[@class="positionInfo"]/a[@class="district"]/text()').extract()
+           item['district'] = xq.xpath('.//div[@class="positionInfo"]/a[@class="bizcircle"]/text()').extract()
+           item['avgPrice'] = xq.xpath('.//div[@class="totalPrice"]/span/text()').extract()
+           item['zaishouCount'] = xq.xpath('.//a[@class="totalSellCount"]/span/text()').extract()
            item['city'] = str("北京")
-
            yield scrapy.Request(xq_url, callback=self.parse_xq_detail, dont_filter=True)
            yield scrapy.Request(sale_url, callback=self.parse_house, dont_filter=True)
            yield item
@@ -58,7 +57,7 @@ class LianjiaSpiderSpider(scrapy.Spider):
      def parse_xq_detail(self, response):
         item = XiaoquDetailItem()
         item['id'] = response.url
-        item['name'] = response.xpath('/html/body/div[4]/div/div[1]/h1')
+        item['name'] = response.xpath('/html/body/div[4]/div/div[1]/h1').extract()
         xq_detail = response.xpath('.//span[@class="xiaoquInfoContent"]/text()').extract()
         item['buildYear'] = xq_detail[0]
         item['bulidType'] = xq_detail[1]
@@ -84,11 +83,11 @@ class LianjiaSpiderSpider(scrapy.Spider):
       house_list = response.xpath('//ul[@class="sellListContent"]/li[@class="clear LOGCLICKDATA"]')
       for house in house_list:
         item = ZSHouseItem()
-        item['name'] = house.xpath('.//div[@class="title"]/a/text()')
+        item['name'] = house.xpath('.//div[@class="title"]/a/text()').extract()
         item['city'] = str("北京")
-        item['xiaoquId'] = house.xpath('//*[@id="sem_card"]/div/div[2]/div[1]/a[1]/@href')
-        item['xiaoquName'] = house.xpath('//*[@id="sem_card"]/div/div[2]/div[1]/a[1]/text()')
-        content = house.xpath('.//div[@class="address"]/div[@class="houseInfo"]')
+        item['xiaoquId'] = house.xpath('//*[@id="sem_card"]/div/div[2]/div[1]/a[1]/@href').extract()
+        item['xiaoquName'] = house.xpath('//*[@id="sem_card"]/div/div[2]/div[1]/a[1]/text()').extract()
+        content = house.xpath('.//div[@class="address"]/div[@class="houseInfo"]').extract()
         if len(content):
             content = content[0].split('/')
             item['huXing'] = content[1]
@@ -97,13 +96,13 @@ class LianjiaSpiderSpider(scrapy.Spider):
             item['fitment'] = content[4]
             item['lift'] = content[5]
 
-        content = house.xpath('.//div[@class="flood"]/div[@class="positionInfo"]')
+        content = house.xpath('.//div[@class="flood"]/div[@class="positionInfo"]').extract()
         if len(content):
            content = content[0].split('/')
            item['floor'] = content[0]
            item['buildType'] = content[1]
            item['district'] = content[2]
 
-        item['totalPrice'] = house.xpath('.//div[@class="followInfo"]/div[@class="priceInfo"]/div[@class="totalPrice"]')
-        item['price'] = house.xpath('.//div[@class="followInfo"]/div[@class="priceInfo"]/div[@class="unitPrice"]')
+        item['totalPrice'] = house.xpath('.//div[@class="followInfo"]/div[@class="priceInfo"]/div[@class="totalPrice"]').extract()
+        item['price'] = house.xpath('.//div[@class="followInfo"]/div[@class="priceInfo"]/div[@class="unitPrice"]').extract()
         yield  item
