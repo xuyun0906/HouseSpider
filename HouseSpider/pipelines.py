@@ -6,12 +6,12 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from settings import *
 from items import XiaoquItem, XiaoquDetailItem, ZSHouseItem
-import MySQLdb
+import pymysql
 
 class HousespiderPipeline(object):
 
     def open_spider(self, spider):
-        self.con = MySQLdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PWD, MYSQL_DBNAME, charset="utf8")
+        self.con = pymysql.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PWD, MYSQL_DBNAME, charset="utf8")
         self.cursor = self.con.cursor()
 
 

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import json
+from items import XiaoquItem, XiaoquDetailItem, ZSHouseItem
 
 
 class LianjiaSpiderSpider(scrapy.Spider):
@@ -66,7 +68,7 @@ class LianjiaSpiderSpider(scrapy.Spider):
         item['developers'] = xq_detail[4]
         item['loudongCount'] = xq_detail[5]
         item['fangwuCount'] = xq_detail[6]
-          yield item
+        yield item
 
 
      def parse_house(self, response):

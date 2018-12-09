@@ -5,8 +5,7 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
-from scrapy import Item, Field
-
+import scrapy
 
 class XiaoquItem(scrapy.Item):
     id = scrapy.Field()  # 小区ID
